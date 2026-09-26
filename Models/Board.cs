@@ -5,42 +5,40 @@ using Chess_Game.Models.Pieces;
 
 namespace Chess_Game.Models;
 
-// Represents the chess board.
-// It stores pieces and their positions.
-// It does NOT decide whether a move is legal.
 public class Board
 {
-    // The board has 8 rows and 8 columns.
-    // A square can contain a Piece or be empty (null).
+
+    // board as 2d array 
     private readonly Piece?[,] grid;
 
-    // Creates a normal chess board.
     public Board()
     {
         grid = new Piece?[8, 8];
 
         SetupBoard();
     }
-
-    // Returns the piece at a specific position.
-    // If the position is outside the board, return null.
+        //check if piece inside board 
+        public bool IsInside(Position position)
+    {
+        return position.Row>=0 && position.Row<8 && position.Column>=0 && position.Column<8;
+    }
+    //give pisition and check if null or actually has a piece
     public Piece? GetPiece(Position position)
     {
-        if (!IsInside(position))
-            return null;
+        
+        if(!IsInside(position))
+        return null;
 
-        return grid[position.Row, position.Column];
+        return grid[position.Row,position.Column];
     }
-
     // Puts a piece on a specific square.
-    public void SetPiece(Position position, Piece piece)
+    public void SetPiece(Position position,Piece piece)
     {
-        if (!IsInside(position))
-            throw new ArgumentOutOfRangeException(nameof(position));
+        // this place not into board
+        if(!IsInside(position))
+        throw new ArgumentOutOfRangeException(nameof(position));
 
-        grid[position.Row, position.Column] = piece;
-
-        // Make sure the piece also knows its new position.
+        grid[position.Row,position.Column] = piece;
         piece.Position = position;
     }
 
@@ -48,7 +46,7 @@ public class Board
     public void RemovePiece(Position position)
     {
         if (!IsInside(position))
-            throw new ArgumentOutOfRangeException(nameof(position));
+        throw new ArgumentOutOfRangeException(nameof(position));
 
         grid[position.Row, position.Column] = null;
     }
@@ -56,87 +54,39 @@ public class Board
     // Moves a piece from one square to another.
     public void MovePiece(Position from, Position to)
     {
-        // Get the piece from the starting square.
+        //know piece from starting position
         Piece? piece = GetPiece(from);
+        if(piece is null)
+        throw new InvalidOperationException("There is no piece from starting position");
 
-        // There must be a piece at the starting position.
-        if (piece == null)
-            throw new InvalidOperationException(
-                "There is no piece at the starting position."
-            );
+        grid[to.Row,to.Column] = piece;
 
-        // Put the piece in the new square.
-        grid[to.Row, to.Column] = piece;
+        grid[from.Row,from.Column] = null;
 
-        // Empty the old square.
-        grid[from.Row, from.Column] = null;
-
-        // Update the piece's position.
         piece.Position = to;
-    }
 
-    // Checks if a position is inside the 8x8 board.
-    public bool IsInside(Position position)
-    {
-        return position.Row >= 0 &&
-               position.Row < 8 &&
-               position.Column >= 0 &&
-               position.Column < 8;
-    }
 
+    }
+    
     // Returns all pieces currently on the board.
     public List<Piece> GetAllPieces()
     {
         List<Piece> pieces = new List<Piece>();
 
-        // Check every square.
-        for (int row = 0; row < 8; row++)
+        for(int row = 0; row < 8; row++)
         {
-            for (int column = 0; column < 8; column++)
-            {
-                Piece? piece = grid[row, column];
+            for(int column = 0; column<8; column++)
+            {          
+            Piece? piece = grid[row,column];
 
-                // If there is a piece, add it to the list.
-                if (piece != null)
-                {
-                    pieces.Add(piece);
-                }
+            if(piece is not null)
+            pieces.Add(piece);
+
             }
         }
-
         return pieces;
     }
 
-    // Creates a copy of the board.
-    // This is useful when we want to test a move
-    // without changing the real board.
-    public Board Clone()
-    {
-        // Create an empty board.
-        Board copy = new Board(false);
-
-        // Go through every square.
-        for (int row = 0; row < 8; row++)
-        {
-            for (int column = 0; column < 8; column++)
-            {
-                Piece? piece = grid[row, column];
-
-                // If the square contains a piece,
-                // create a new copy of that piece.
-                if (piece != null)
-                {
-                    Position position = new Position(row, column);
-
-                    Piece newPiece = CopyPiece(piece, position);
-
-                    copy.SetPiece(position, newPiece);
-                }
-            }
-        }
-
-        return copy;
-    }
 
     // Creates a new piece with the same type, color and position.
     private Piece CopyPiece(Piece piece, Position position)
@@ -161,19 +111,33 @@ public class Board
         return new Pawn(piece.Color, position);
     }
 
-    // Creates an empty board.
-    // Used by Clone().
-    private Board(bool setupPieces)
-    {
-        grid = new Piece?[8, 8];
 
-        if (setupPieces)
+    // Creates a copy of the board.
+    // This is useful when we want to test a move
+    // without changing the real board.
+
+    public Board Clone()
+    {
+        Board Copy = new Board(false);
+
+        for(int row = 0;row <8; row++)
         {
-            SetupBoard();
+            for(int column = 0; column < 8; column++)
+            {
+                Piece? piece = grid[row,column];
+                if(piece is not null)
+                {
+                    Position position =new Position(row,column);
+                    Piece newPiece = CopyPiece(piece,position);
+                    Copy.SetPiece(position,newPiece);
+                }
+            }
         }
+        return Copy;
     }
 
-    // Places all chess pieces in their starting positions.
+
+     // Places all chess pieces in their starting positions.
     private void SetupBoard()
     {
         // Order of the pieces in the first row.
@@ -219,9 +183,9 @@ public class Board
             SetPiece(whitePawnPosition, whitePawn);
 
 
-            // -------------------------
+            // ========================
             // BLACK PIECES
-            // -------------------------
+            // =======================
 
             // Black back-row piece.
             Position blackBackPosition = new Position(0, column);
@@ -246,4 +210,19 @@ public class Board
             SetPiece(blackPawnPosition, blackPawn);
         }
     }
+
+
+    // Creates an empty board.
+    // Used by Clone().
+    private Board(bool setupPieces)
+    {
+        grid = new Piece?[8, 8];
+
+        if (setupPieces)
+        {
+            SetupBoard();
+        }
+    }
+
+   
 }
