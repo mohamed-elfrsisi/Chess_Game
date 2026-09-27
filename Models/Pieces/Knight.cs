@@ -1,14 +1,37 @@
+using Chess_Game.Enums;
+//AYMAN
 namespace Chess_Game.Models.Pieces;
 
-// Task: Ayman
-// Goal: The Knight jumps in an L-shape (8 possible jumps).
-// What to do:
-//  1) Set Symbol to 'N'.
-//  2) Draw the 8 L-shaped jumps on paper first.
-//  3) List those 8 offsets and call the GetStepMoves helper from Piece.cs.
+// Knight inherits from the abstract class Piece,
+// so it must implement Symbol and GetValidMoves.
 public class Knight : Piece
 {
-    // TODO: add Symbol => 'N'
-    // TODO: add constructor
-    // TODO: implement GetValidMoves(Board board)
+    // The letter that represents the Knight on the board/console.
+    public override char Symbol => 'N';
+
+    // Constructor: just passes color and position to the base class (Piece).
+    public Knight(PieceColor color, Position position) : base(color, position)
+    {
+    }
+
+    // Returns all the valid squares this Knight can move to.
+    public override List<Position> GetValidMoves(Board board)
+    {
+        // The Knight moves in an "L" shape: 8 possible jumps.
+        // Each pair is (change in Row, change in Column).
+        //LIST Include the  knight's 8 STEPS.
+        List<(int Row, int Column)> steps = new List<(int Row, int Column)>
+        {
+            (-2, -1), (-2, 1),   // 2 up, 1 left/right
+            (-1, -2), (-1, 2),   // 1 up, 2 left/right
+            (1, -2),  (1, 2),    // 1 down, 2 left/right
+            (2, -1),  (2, 1)     // 2 down, 1 left/right
+        };
+
+        // GetStepMoves (from the base Piece class) checks each jump:
+        // - is it inside the board?
+        // - is the target square empty, or has an enemy piece?
+        // It returns only the valid ones.
+        return GetStepMoves(board, steps);
+    }
 }
