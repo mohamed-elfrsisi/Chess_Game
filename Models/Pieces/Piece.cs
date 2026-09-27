@@ -74,7 +74,7 @@ protected List<Position> GetStepMoves(Board board, List<(int Row,int Column)> st
 
             Piece? pieceOnTarget = board.GetPiece(target);
 
-            if(pieceOnTarget ==null || pieceOnTarget !=Color)
+            if(pieceOnTarget ==null || pieceOnTarget.Color != Color)
             moves.Add(target);
         }
         return moves;

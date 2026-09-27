@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/mohamed-elfarsisi/Downloads/Chess_Game_Skeleton(1)/Chess_Game/Chess_Game.csproj": {}
+    "/home/mohamed-elfarsisi/projects/Chess_Game/Chess_Game.csproj": {}
   },
   "projects": {
-    "/home/mohamed-elfarsisi/Downloads/Chess_Game_Skeleton(1)/Chess_Game/Chess_Game.csproj": {
+    "/home/mohamed-elfarsisi/projects/Chess_Game/Chess_Game.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/mohamed-elfarsisi/Downloads/Chess_Game_Skeleton(1)/Chess_Game/Chess_Game.csproj",
+        "projectUniqueName": "/home/mohamed-elfarsisi/projects/Chess_Game/Chess_Game.csproj",
         "projectName": "Chess_Game",
-        "projectPath": "/home/mohamed-elfarsisi/Downloads/Chess_Game_Skeleton(1)/Chess_Game/Chess_Game.csproj",
+        "projectPath": "/home/mohamed-elfarsisi/projects/Chess_Game/Chess_Game.csproj",
         "packagesPath": "/home/mohamed-elfarsisi/.nuget/packages/",
-        "outputPath": "/home/mohamed-elfarsisi/Downloads/Chess_Game_Skeleton(1)/Chess_Game/obj/",
+        "outputPath": "/home/mohamed-elfarsisi/projects/Chess_Game/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/mohamed-elfarsisi/.nuget/NuGet/NuGet.Config"
