@@ -20,7 +20,7 @@ public static class PieceFactory
                 return new Bishop(color,position);
             case "knight":
                 return new Knight(color,position);
-            case "Pawn":
+            case "pawn":
                 return new Pawn(color,position);
 
             default:

@@ -65,7 +65,7 @@ public class Game
         ChangeTurn();
 
         // Recalculate the game state after the move.
-        Status = gameRules.GetGameStatus(this);
+       Status = gameRules.GetGameStatus(Board, CurrentTurn);
     }
 
     private void PromotePawnIfNeeded(Piece piece)
