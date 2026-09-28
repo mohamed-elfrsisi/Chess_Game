@@ -1,24 +1,106 @@
+using Chess_Game.Enums;
+using Chess_Game.Models;
+using Chess_Game.Models.Pieces;
+
 namespace Chess_Game.Logic;
 
-// Task: Ayman
-// Goal: Know the "big picture" rules of chess: is a king in check, is it
-// checkmate, is it stalemate.
-// What to do:
-//  1) IsKingInCheck(board, color): find that color's king, then check if any
-//     enemy piece's moves include the king's square.
-//  2) MoveLeavesKingInCheck(board, from, to): copy the board (Board.Clone()),
-//     make the move on the copy, then call IsKingInCheck on the copy.
-//  3) GetLegalMoves(board, piece): the piece's normal moves, minus any move
-//     that would leave its own king in check.
-//  4) HasAnyLegalMove(board, color): true if that player has at least one
-//     legal move anywhere on the board.
-//  5) GetGameStatus(game): combine the above into InProgress / Check /
-//     Checkmate / Stalemate for whoever's turn it is.
 public class GameRules
 {
-    // TODO: implement IsKingInCheck
-    // TODO: implement MoveLeavesKingInCheck
-    // TODO: implement GetLegalMoves
-    // TODO: implement HasAnyLegalMove
-    // TODO: implement GetGameStatus
+    // true if an enemy piece can capture the king of this color
+    public bool IsKingInCheck(Board board, PieceColor color)
+    {
+        // find where the king is
+        Position? kingPosition = null;
+
+        foreach (Piece piece in board.GetAllPieces())
+        {
+            if (piece is King && piece.Color == color)
+            {
+                kingPosition = piece.Position;
+                break;
+            }
+        }
+
+        // no king on the board, so no check
+        if (kingPosition is null)
+            return false;
+
+        // if any enemy move ends on the king's square, it's check
+        foreach (Piece piece in board.GetAllPieces())
+        {
+            if (piece.Color != color)
+            {
+                foreach (Position move in piece.GetValidMoves(board))
+                {
+                    if (move.Row == kingPosition.Row && move.Column == kingPosition.Column)
+                        return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    // play the move on a copy of the board and see if our king ends up in check
+    public bool MoveLeavesKingInCheck(Board board, Position from, Position to)
+    {
+        Piece? piece = board.GetPiece(from);
+
+        // nothing on the starting square
+        if (piece is null)
+            return false;
+
+        // the copy is used so the real board doesn't change
+        Board copy = board.Clone();
+        copy.MovePiece(from, to);
+
+        return IsKingInCheck(copy, piece.Color);
+    }
+
+    // normal moves of the piece, without the ones that put our own king in check
+    public List<Position> GetLegalMoves(Board board, Piece piece)
+    {
+        List<Position> legalMoves = new List<Position>();
+
+        foreach (Position move in piece.GetValidMoves(board))
+        {
+            if (!MoveLeavesKingInCheck(board, piece.Position, move))
+                legalMoves.Add(move);
+        }
+
+        return legalMoves;
+    }
+
+    // true if this color has at least one legal move (stops at the first one)
+    public bool HasAnyLegalMove(Board board, PieceColor color)
+    {
+        foreach (Piece piece in board.GetAllPieces())
+        {
+            if (piece.Color == color && GetLegalMoves(board, piece).Count > 0)
+                return true;
+        }
+
+        return false;
+    }
+
+    // status for the player whose turn it is
+    // (takes board + color for now because Game.cs isn't written yet)
+    public GameStatus GetGameStatus(Board board, PieceColor turn)
+    {
+        bool inCheck = IsKingInCheck(board, turn);
+        bool hasMove = HasAnyLegalMove(board, turn);
+
+        // check and no way out
+        if (inCheck && !hasMove)
+            return GameStatus.Checkmate;
+
+        if (inCheck)
+            return GameStatus.Check;
+
+        // not in check but nothing to play
+        if (!hasMove)
+            return GameStatus.Stalemate;
+
+        return GameStatus.InProgress;
+    }
 }
