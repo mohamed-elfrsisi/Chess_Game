@@ -1,5 +1,4 @@
-// Task: Yasmeen
-// Goal: The entry point of the app.
-// What to do: Create a MenuManager and start it.
+using Chess_Game.UI.Console;
 
-// TODO: create MenuManager and run the game loop
+MenuManager menu = new MenuManager();
+menu.Start();
