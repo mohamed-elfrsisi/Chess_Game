@@ -1,5 +1,0 @@
-C:\Users\DELL\OneDrive\Desktop\chess\Chess_Game\obj\Debug\net10.0\Chess_Game.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\DELL\OneDrive\Desktop\chess\Chess_Game\obj\Debug\net10.0\Chess_Game.AssemblyInfoInputs.cache
-C:\Users\DELL\OneDrive\Desktop\chess\Chess_Game\obj\Debug\net10.0\Chess_Game.AssemblyInfo.cs
-C:\Users\DELL\OneDrive\Desktop\chess\Chess_Game\obj\Debug\net10.0\Chess_Game.csproj.CoreCompileInputs.cache
-C:\Users\DELL\OneDrive\Desktop\chess\Chess_Game\obj\Debug\net10.0\Chess_Game.sourcelink.json

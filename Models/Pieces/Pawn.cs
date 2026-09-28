@@ -1,20 +1,61 @@
+using Chess_Game.Enums;
+
 namespace Chess_Game.Models.Pieces;
 
-// Task: Mohamed + Saeid (work on this one together)
-// Goal: The trickiest piece. Pawns move forward only, can move two squares
-// from their starting row, and capture only diagonally.
-// What to do:
-//  1) Set Symbol to 'P'.
-//  2) Work out the forward direction based on color (White goes up, Black goes down).
-//  3) Allow one square forward if it's empty.
-//  4) Allow two squares forward only if the pawn is still on its starting row
-//     and both squares are empty.
-//  5) Allow a diagonal move only if there's an enemy piece there (capture only,
-//     never move diagonally onto an empty square).
-// Go slow on this one — talk through each rule out loud before writing it.
+// The Pawn is the trickiest piece:
+//  - it moves forward only (never sideways or backward)
+//  - it moves one square, or two squares from its starting row
+//  - it can only capture diagonally, one square forward
 public class Pawn : Piece
 {
-    // TODO: add Symbol => 'P'
-    // TODO: add constructor
-    // TODO: implement GetValidMoves(Board board)
+    public override char Symbol => 'P';
+
+    public Pawn(PieceColor color, Position position) : base(color, position)
+    {
+    }
+
+    public override List<Position> GetValidMoves(Board board)
+    {
+        List<Position> moves = new List<Position>();
+
+        // White moves up the board (toward row 0), Black moves down (toward row 7).
+        int direction = Color == PieceColor.White ? -1 : 1;
+        int startRow = Color == PieceColor.White ? 6 : 1;
+
+        // Move forward 
+        Position oneStep = new Position(Position.Row + direction, Position.Column);
+
+        if (board.IsInside(oneStep) && board.GetPiece(oneStep) == null)
+        {
+            moves.Add(oneStep);
+
+            // Still on the starting row? Then two squares forward is also allowed,
+            // as long as that square is empty too.
+            if (Position.Row == startRow)
+            {
+                Position twoSteps = new Position(Position.Row + direction * 2, Position.Column);
+
+                if (board.GetPiece(twoSteps) == null)
+                    moves.Add(twoSteps);
+            }
+        }
+
+        // --- Capture diagonally ---
+        int[] captureColumns = [ Position.Column - 1, Position.Column + 1 ];
+
+        foreach (int column in captureColumns)
+        {
+            Position capturePosition = new Position(Position.Row + direction, column);
+
+            if (!board.IsInside(capturePosition))
+                continue;
+
+            Piece? target = board.GetPiece(capturePosition);
+
+            if (target != null && target.Color != Color)
+                moves.Add(capturePosition);
+        }
+
+        return moves;
+    }
 }
