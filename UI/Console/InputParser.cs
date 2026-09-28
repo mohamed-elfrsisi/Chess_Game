@@ -11,7 +11,7 @@ public class InputParser
         throw new InvalidInputException($"'{input}' is not square, for example use e2");
 
         char file = char.ToLower(input[0]);
-        char rank = input[2];
+        char rank = input[1];
 
         if(file<'a' || file > 'h')
         throw new InvalidInputException("the letter most be between a and h");
