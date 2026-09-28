@@ -4,7 +4,7 @@ namespace Chess_Game.Models;
 
 public class Player
 {
-    string Name{get;}
+    public string Name { get; }
     PieceColor Color{get;}
 
     public Player(string name, PieceColor color)
