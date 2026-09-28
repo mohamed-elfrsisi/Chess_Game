@@ -1,0 +1,20 @@
+# Chess Game Console Application
+
+A modular Chess Game built in C# using Object-Oriented Programming (OOP) principles and designed with custom UML architecture.
+
+## Features
+- **Object-Oriented Architecture:** Designed using clean OOP principles (Inheritance, Polymorphism, Abstraction).
+- **Move Validation:** Standard movement rules for chess pieces (Pawn, Rook, Knight, Bishop, Queen, King).
+- **Interactive CLI:** Playable directly from the console window.
+- **Extensible Codebase:** Structured to allow future updates like AI opponents or GUI integration.
+
+## Tech Stack
+- **Language:** C#
+- **Framework:** .NET / Visual Studio
+- **Design Tools:** Draw.io (UML Diagrams)
+- **Version Control:** Git & GitHub
+
+## How to Run
+1. Clone the repository:
+   ```bash
+   git clone [https://github.com/omarabdelazizelsayed/Chess_Game.git](https://github.com/omarabdelazizelsayed/Chess_Game.git)
