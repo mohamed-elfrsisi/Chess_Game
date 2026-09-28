@@ -1,14 +1,25 @@
 namespace Chess_Game.Models.Pieces;
+using Chess_Game.Enums;
 
-// Task: Yasmeen
-// Goal: The Rook slides in straight lines until it's blocked.
-// What to do:
-//  1) Set Symbol to 'R'.
-//  2) List the 4 straight directions (up, down, left, right).
-//  3) Call the GetSlidingMoves helper from Piece.cs with those directions.
+
 public class Rook : Piece
 {
-    // TODO: add Symbol => 'R'
-    // TODO: add constructor
-    // TODO: implement GetValidMoves(Board board)
+    public override char Symbol => 'R';
+
+    public Rook(PieceColor color,Position position) : base(color, position)
+    {
+        
+    }
+
+    public override List<Position> GetValidMoves(Board board)
+    {
+        List<(int Row,int Column)> directions = new List<(int Row,int Column)>
+        {
+          (-1,0), //up
+          (1,0), //down
+          (0,-1), // left
+          (0,1) //right  
+        };
+        return GetSlidingMoves(board, directions);
+    }
 }
